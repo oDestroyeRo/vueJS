@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="css/bulma.css">
+	<title>Learning VueJS</title>
+</head>
+<body>
+	<div class="container" id="vue-app">
+		<article class="message is-primary">
+
+			<div class="message-body" v-bind:title="message">
+				<!-- v-bind use value in attibute -->
+				{{ message }}
+				{{ score }}
+				Grade: {{ grade }}
+				<button class="button" v-on:click="plus()">+1</button>
+				<button class="button" v-on:click="plus(10)">+10</button>
+				<button class="button" v-on:click="score += 100">+100</button>
+				<div>
+					{{ fullname }}
+				</div>
+			</div>
+			
+		</article>
+	</div>
+	<!--<button class="button" onclick="plus1()">+1</button> -->
+	<script src="js/view2.2.6.js"></script>
+	<script>
+		// vm : view-model
+		// mvc : model view controller
+		// mvvm : model view view-model
+		// mvp : model view presenter (interface)
+		var vm = new Vue({
+			el: '#vue-app',
+			data :{
+				message : 'Hello Vue!',
+				score : 10,
+				firstname: 'Tony',
+				lastname: 'Stark'
+			},
+			computed : {
+				fullname: function(){
+					//return this.firstname + " " + this.lastname;
+					return `Mr.${this.firstname} - ${this.lastname}`;
+				},
+				grade: function(){
+					var grade = 'F';
+					if (this.score >= 80){
+						grade = 'A';
+					}
+					else if (this.score >= 75){
+						grade = 'B+';
+					}
+					return grade;
+				}
+			},
+			methods : {
+				plus: function(number = 1){
+					this.score += number;
+					this.log();
+				},
+
+				log: function(){
+					console.log(this.score);
+				}
+			}
+
+		});
+		// function plus1(){
+		// 	vm.score++;
+		// }
+	</script>
+</body>
+</html>
