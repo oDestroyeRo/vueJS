@@ -8,9 +8,9 @@
 	<div class="container" id="vue-app">
 		<article class="message is-primary">
 
-			<div class="message-body" v-bind:title="message">
+			<!-- <div class="message-body" v-bind:title="message"> -->
 				<!-- v-bind use value in attibute -->
-				{{ message }}
+				<!-- {{ message }}
 				{{ score }}
 				Grade: {{ grade }}
 				<button class="button" v-on:click="plus()">+1</button>
@@ -18,25 +18,198 @@
 				<button class="button" v-on:click="score += 100">+100</button>
 				<div>
 					{{ fullname }}
+					{{ students[0].firstname }}
+					{{ students[0].lastname }}
+				</div> -->
+			<!-- </div><br> -->
+
+			<!-- <div class="message-body" v-bind:title="message">
+				<div class="field">
+				  <label class="label">Firstname</label>
+				  <p class="control">
+				    <input v-model="firstname" class="input" type="text" placeholder="Text input">
+				  </p>
 				</div>
-			</div>
+				<div class="field">
+				  <label class="label">Lastname</label>
+				  <p class="control">
+				    <input v-model="lastname" class="input" type="text" placeholder="Text input">
+				  </p>
+				</div>
+			</div> -->
 			
 		</article>
+
+		<button class="button"
+			v-on:click="isModeCreate=!isModeCreate">
+			Toggle Mode
+		</button>
+
+		<div v-if="isModeCreate">
+			<div class="field">
+				  <label class="label">Code</label>
+				  <p class="control">
+				    <input v-model="formStudent.code" class="input" type="text" placeholder="Text input">
+				  </p>
+			</div>
+			<div class="field">
+				  <label class="label">Firstname</label>
+				  <p class="control">
+				    <input v-model="formStudent.firstname" class="input" type="text" placeholder="Text input">
+				  </p>
+			</div>
+			<div class="field">
+				  <label class="label">Lastname</label>
+				  <p class="control">
+				    <input v-model="formStudent.lastname" class="input" type="text" placeholder="Text input">
+				  </p>
+			</div>
+			<div class="field">
+			  <label class="label">Gender</label>
+			  <p class="control">
+			    <span class="select">
+			      <select v-model=formStudent.gender>
+			        <option value="">Select Gender</option>
+			        <option value="M">Male</option>
+			        <option value="F">Fmale</option>
+			      </select>
+			    </span>
+			  </p>
+			</div>
+
+			<button class="button" v-on:click="submitStudent()"> Add New Student</button>
+		</div>
+
+		<table class="table" v-if="!isModeCreate">
+			<thead>
+				<tr>
+					<th>No.</th>
+					<th>Code</th>
+					<th>Firstname</th>
+					<th>Lastname</th>
+					<th>Gender</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- <tr v-for="(student, index) in students" v-if="student.isLive"> -->
+				<tr v-for="(student, index) in students">
+					<td>{{ index + 1 }}</td>
+					<td>{{ student.code }}</td>
+					<td>{{ student.firstname | upper}}</td>
+					<td>{{ student.lastname }}</td>
+					<td>{{ student.gender | toFullGender | upper}}</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 	<!--<button class="button" onclick="plus1()">+1</button> -->
 	<script src="js/view2.2.6.js"></script>
 	<script>
+		Vue.filter('upper', function(value){
+			return value.toUpperCase();
+		})
 		// vm : view-model
 		// mvc : model view controller
 		// mvvm : model view view-model
 		// mvp : model view presenter (interface)
 		var vm = new Vue({
 			el: '#vue-app',
-			data :{
-				message : 'Hello Vue!',
-				score : 10,
-				firstname: 'Tony',
-				lastname: 'Stark'
+			data: {
+				// message : 'Hello Vue!',
+				// score : 10,
+				// firstname: 'Tony',
+				// lastname: 'Stark'
+
+				// message : '',
+				// score : 0,
+				// firstname: '',
+				// lastname: '',
+				students: [],
+				isModeCreate: false,
+				formStudent: {
+					code: '',
+					firstname: '',
+					lastname: '',
+					gender: '',
+					isLive: true
+				}
+
+			},
+			filters: {
+				toFullGender: function(value){
+					var gender = 'Unknown';
+					switch (value){
+						case 'M':
+							gender = 'Male';
+							break;
+						case 'F':
+							gender = 'Female';
+							break;
+					}
+					return gender;
+				}
+			},
+			mounted: function(){
+				// this.firstname = 'Tony';
+				// this.lastname = 'Stark';
+				// this.score = 10;
+				// this.message = 'hello Vue!';
+				this.students.push({
+					code: '5710450201',
+					firstname: 'Natpakan',
+					lastname: 'Wongchamnan',
+					isLive: true,
+					gender: 'M'
+				});
+				this.students.push({
+					code: '5710450202',
+					firstname: 'Antony',
+					lastname: 'Stark',
+					isLive: true,
+					gender: 'M'
+				});
+				this.students.push({
+					code: '5710450203',
+					firstname: 'Stacy',
+					lastname: 'Gwen',
+					isLive: false,
+					gender: 'F'
+				});
+				this.students.push({
+					code: '5710450204',
+					firstname: 'Norman',
+					lastname: 'Osborn',
+					isLive: false,
+					gender: 'M'
+				});
+				this.students.push({
+					code: '5710450205',
+					firstname: 'Norman',
+					lastname: 'Freeman',
+					isLive: true,
+					gender: 'M'
+				});
+				this.students.push({
+					code: '5710450206',
+					firstname: 'Troll',
+					lastname: 'Warlord',
+					isLive: true,
+					gender: 'M'
+				});
+				this.students.push({
+					code: '5710450207',
+					firstname: 'Riki',
+					lastname: 'Maru',
+					isLive: true,
+					gender: 'M'
+				});
+				this.students.push({
+					code: '5710450208',
+					firstname: 'Ember',
+					lastname: 'Spilit',
+					isLive: true,
+					gender: 'M'
+				});
 			},
 			computed : {
 				fullname: function(){
@@ -62,6 +235,28 @@
 
 				log: function(){
 					console.log(this.score);
+				},
+
+				submitStudent: function(){
+					if(this.formStudent.code.length > 0 
+						&& this.formStudent.firstname.length > 2 
+						&& this.formStudent.lastname.length > 2 
+						&& this.formStudent.gender.length > 0){
+						this.students.push({
+							code: this.formStudent.code,
+							firstname: this.formStudent.firstname,
+							lastname: this.formStudent.lastname,
+							gender: this.formStudent.gender,
+							isLive: this.formStudent.isLive
+						});
+						this.clearFormStudent();
+					}
+				},
+				clearFormStudent: function(){
+					this.formStudent.code = '';
+					this.formStudent.firstname = '';
+					this.formStudent.lastname = '';
+					this.formStudent.gender = '';
 				}
 			}
 
